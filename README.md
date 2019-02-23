@@ -4,4 +4,7 @@ This is an implementation of [Learning Representations and Generative Models for
 
 ## Requirements
 1. pytorch 1.0
-2. numpy, Pillow
+2. numpy, plyfile, plotly
+
+
+https://github.com/optas/latent_3d_points
