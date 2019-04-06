@@ -3,6 +3,7 @@ import torch.nn as nn
 
 
 class ChamferDistance(nn.Module):
+
     def __init__(self):
         super(ChamferDistance, self).__init__()
 
@@ -27,5 +28,5 @@ class ChamferDistance(nn.Module):
         min_for_each_x_i, _ = d.min(dim=2)  # shape [b, n]
         min_for_each_y_j, _ = d.min(dim=1)  # shape [b, m]
 
-        distance = min_for_each_x_i.sum(1) + min_for_each_y_j.sum(1)
+        distance = min_for_each_x_i.sum(1) + min_for_each_y_j.sum(1)  # shape [b]
         return distance.mean(0)

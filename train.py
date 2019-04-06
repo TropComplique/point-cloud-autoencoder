@@ -6,7 +6,7 @@ from trainer import Trainer
 
 
 NUM_EPOCHS = 24
-BATCH_SIZE = 16
+BATCH_SIZE = 50
 PATH = 'models/run00.pth'
 DEVICE = torch.device('cuda:0')
 TRAIN_PATH = ''
