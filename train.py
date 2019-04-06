@@ -6,18 +6,20 @@ from trainer import Trainer
 
 
 NUM_EPOCHS = 24
-BATCH_SIZE = 50
+BATCH_SIZE = 32
 PATH = 'models/run00.pth'
 DEVICE = torch.device('cuda:0')
 TRAIN_PATH = ''
 VAL_PATH = ''
+labels = ['02691156']
+dataset_path = '/home/dan/datasets/shape_net_core_uniform_samples_2048/'
 TRAIN_LOGS = 'models/run00.json'
 
 
 def train_and_evaluate():
 
-    train = PointClouds()
-    val = PointClouds(is_training=False)
+    train = PointClouds(dataset_path, labels, is_training=True)
+    val = PointClouds(dataset_path, labels, is_training=False)
 
     train_loader = DataLoader(
         dataset=train, batch_size=BATCH_SIZE, shuffle=True,
@@ -29,8 +31,8 @@ def train_and_evaluate():
     )
 
     num_steps = NUM_EPOCHS * (len(train) // BATCH_SIZE)
-    model = Trainer(num_steps)
-    model.network.to(DEVICE)
+    model = Trainer(num_steps, DEVICE)
+    # model.network.to(DEVICE)
 
     i = 0
     logs = []
@@ -45,17 +47,17 @@ def train_and_evaluate():
             loss = model.train_step(x)
 
             i += 1
-            log = text.format(e, i, loss.item())
+            log = text.format(e, i, loss)
             print(log)
-            logs.append({n: float(v.item()) for n, v in losses.items()})
+            logs.append(loss)
 
         eval_losses = []
         model.network.eval()
         for batch in val_loader:
 
             x = x.to(DEVICE)
-            loss = model.train_step(x)
-            eval_losses.append({n: float(v.item()) for n, v in losses.items()})
+            loss = model.evaluate(x)
+            eval_losses.append(loss)
 
         eval_losses = {k: sum(d[k] for d in eval_losses)/len(eval_losses) for k in losses.keys()}
         eval_losses.update({'type': 'eval'})

@@ -5,7 +5,6 @@ import torch.nn.init as init
 
 import torch.optim as optim
 from torch.optim.lr_scheduler import CosineAnnealingLR
-from scipy.stats import ortho_group
 
 from model import Autoencoder
 from loss import ChamferDistance
